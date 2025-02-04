@@ -1,0 +1,38 @@
+name: Keep draw.io png synchronized
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "**.drawio"
+      - .github/workflows/drawio-export.yml
+
+concurrency:
+  group: drawio-export-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  drawio-export:
+    name: "Drawio PNG Sync"
+    runs-on: ubuntu-latest
+    permissions: # granular permissions
+      # so GitHub can check out this repo using the default github.token
+      contents: write
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v3
+
+      - name: Export drawio files to png files
+        uses: rlespinasse/drawio-export-action@v2
+        with:
+          format: png
+          transparent: true
+          remove-page-suffix: true
+
+      - name: Auto Commit Changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "docs: drawio png sync"
+          file_pattern: "*.png"
+          commit_user_name: "github-actions[bot]"
