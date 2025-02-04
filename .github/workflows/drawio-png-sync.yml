@@ -36,5 +36,5 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "docs: drawio png sync"
-          file_pattern: "*.png"
+          file_pattern: "**.png"
           commit_user_name: "github-actions[bot]"
