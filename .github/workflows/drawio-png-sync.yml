@@ -32,6 +32,7 @@ jobs:
           echo "$DrawIoFiles"
           foreach ($file in $DrawIoFiles) {
             & "C:\Program Files\draw.io\draw.io.exe" --export --format png --uncompressed $file.FullName
+            Start-Sleep -Milliseconds 200
           }
 
       - name: Auto Commit Changes
