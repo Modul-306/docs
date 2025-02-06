@@ -28,7 +28,7 @@ jobs:
       - name: Export drawio files to png files (database)
         uses: rlespinasse/drawio-export-action@v2
         with:
-          path: ./database/src/
+          path: ./database/src/m306_erd.drawio
           uncompressed: true
           format: png
           transparent: true
