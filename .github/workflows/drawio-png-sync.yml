@@ -22,7 +22,7 @@ jobs:
 
       - name: Install draw.io
         run: |
-          choco install drawio-desktop -y
+          choco install drawio -y
       
       - name: Export draw.io diagrams to PNG
         run: |
