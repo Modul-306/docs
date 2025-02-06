@@ -25,9 +25,18 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Export drawio files to png files
+      - name: Export drawio files to png files (database)
         uses: rlespinasse/drawio-export-action@v2
         with:
+          path: ./database/src/
+          format: png
+          transparent: true
+          remove-page-suffix: true
+
+      - name: Export drawio files to png files (infra)
+        uses: rlespinasse/drawio-export-action@v2
+        with:
+          path: ./infra/src/ 
           format: png
           transparent: true
           remove-page-suffix: true
