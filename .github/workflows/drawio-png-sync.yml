@@ -22,7 +22,7 @@ jobs:
           node-version: '16'
 
       - name: Install drawio-cli
-        run: npm install -g drawio-cli
+        run: npm i -g @zklogic/draw.io #npm install -g drawio-cli
 
       - name: Export .drawio files to .png
         run: |
