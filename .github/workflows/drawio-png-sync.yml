@@ -11,29 +11,25 @@ on:
 jobs:
   export-drawio:
     runs-on: ubuntu-latest
- 
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
- 
-      - name: Set up Python
-        uses: actions/setup-python@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
-          python-version: '3.9'
- 
-      - name: Install drawio-batch
+          node-version: '16'
+
+      - name: Install drawio-cli
+        run: npm install -g drawio-cli
+
+      - name: Export .drawio files to .png
         run: |
-          pip install drawio-batch
- 
-      - name: Export .drawio to PNG
-        run: |
-          drawio-batch -f png ./database/src/m306_erd.drawio
- 
-      - name: Upload PNG artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: diagram
-          path: ./database/src/m306_erd.png
+          for file in $(find . -name "*.drawio"); do
+            png_file="${file%.drawio}.png"
+            drawio --export --format png --output "$png_file" "$file"
+          done
 
       - name: Auto Commit Changes
         uses: stefanzweifel/git-auto-commit-action@v5
