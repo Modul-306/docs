@@ -2,8 +2,8 @@ name: Keep draw.io png synchronized
 
 on:
   push:
-    branches:
-      - main
+    # branches:
+    #   - main
     paths:
       - "**.drawio"
       - .github/workflows/drawio-png-sync.yml
