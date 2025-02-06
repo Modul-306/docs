@@ -9,45 +9,31 @@ on:
       - .github/workflows/drawio-png-sync.yml
 
 jobs:
-  drawio-export:
-    name: "Drawio PNG Sync"
+  export-drawio:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
+ 
     steps:
-      - name: Checkout sources
+      - name: Checkout repository
         uses: actions/checkout@v3
+ 
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
-          fetch-depth: 0
-
-      - name: Export drawio files to asciidoctor and png files
-        uses: rlespinasse/drawio-export-action@v2
+          python-version: '3.9'
+ 
+      - name: Install drawio-batch
+        run: |
+          pip install drawio-batch
+ 
+      - name: Export .drawio to PNG
+        run: |
+          drawio-batch -f png ./database/src/m306_erd.drawio
+ 
+      - name: Upload PNG artifact
+        uses: actions/upload-artifact@v3
         with:
-          format: adoc
-          transparent: true
-          output: drawio-assets
-
-      # - name: Export drawio files to png files (database)
-      #   uses: rlespinasse/drawio-export-action@v2
-      #   with:
-      #     path: ./database/src/m306_erd.drawio
-      #     output: ./database/src/m306_erd.png
-      #     uncompressed: true
-      #     format: png
-      #     transparent: true
-      #     remove-page-suffix: true
-
-      - name: Export drawio files to png files (infra)
-        uses: rlespinasse/drawio-export-action@v2
-        with:
-          path: ./infra/src/ 
-          uncompressed: true
-          format: png
-          transparent: true
-          remove-page-suffix: true
-
-      - name: Debug files
-        run: ls -R
+          name: diagram
+          path: ./database/src/m306_erd.png
 
       - name: Auto Commit Changes
         uses: stefanzweifel/git-auto-commit-action@v5
