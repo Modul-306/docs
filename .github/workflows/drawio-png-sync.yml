@@ -29,6 +29,7 @@ jobs:
         uses: rlespinasse/drawio-export-action@v2
         with:
           path: ./database/src/m306_erd.drawio
+          output: ./database/src/m306_erd.png
           uncompressed: true
           format: png
           transparent: true
