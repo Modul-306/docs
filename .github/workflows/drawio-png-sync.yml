@@ -12,27 +12,26 @@ jobs:
   export-drawio:
     runs-on: ubuntu-latest
     permissions:
-      contents: write 
+      contents: write  # Required to push changes back to the repo
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0 
+          fetch-depth: 0  # Required for git-auto-commit to work properly
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'  
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v2
 
-      - name: Install drawio-cli
-        run: npm install -g drawio-cli
-
-      - name: Export .drawio files to .png
+      - name: Export .drawio files to .png using Docker
         run: |
+          # Pull the official draw.io docker image
+          docker pull jgraph/drawio
+
+          # Find and convert all .drawio files to .png
           find . -name "*.drawio" -print0 | while IFS= read -r -d '' file; do
             png_file="${file%.drawio}.png"
-            drawio-cli --export --format png --output "$png_file" "$file"
+            docker run --rm -v "$PWD:/workspace" jgraph/drawio --export --format png --output "/workspace/$png_file" "$file"
           done
 
       - name: Auto Commit Changes
