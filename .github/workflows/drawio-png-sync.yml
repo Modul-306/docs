@@ -22,6 +22,8 @@ jobs:
 
       - name: Download draw.io desktop
         run: |
+          sudo apt update
+          sudo apt install libnotify4 libsecret-1-0
           # Extract version without "v" prefix
           DRAWIO_VERSION=$(curl -s https://api.github.com/repos/jgraph/drawio-desktop/releases/latest | grep -oP '"tag_name": "\Kv?(.*)(?=")' | sed 's/^v//')
           wget https://github.com/jgraph/drawio-desktop/releases/download/v$DRAWIO_VERSION/drawio-amd64-$DRAWIO_VERSION.deb
