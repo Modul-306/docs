@@ -23,10 +23,10 @@ jobs:
       - name: Install draw.io
         run: |
           choco install drawio-desktop -y
-          echo "::add-path::C:\Program Files\draw.io"
       
       - name: Export draw.io diagrams to PNG
         run: |
+          $DIR_DRAWIO = "."
           $DrawIoFiles = Get-ChildItem $DIR_DRAWIO *.drawio -File -Recurse
           foreach ($file in $DrawIoFiles) {
             & "C:\Program Files\draw.io\draw.io.exe" --export --format png --uncompressed $file.FullName
