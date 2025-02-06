@@ -24,15 +24,22 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Export drawio files to png files (database)
+      - name: Export drawio files to asciidoctor and png files
         uses: rlespinasse/drawio-export-action@v2
         with:
-          path: ./database/src/m306_erd.drawio
-          output: ./database/src/m306_erd.png
-          uncompressed: true
-          format: png
+          format: adoc
           transparent: true
-          remove-page-suffix: true
+          output: drawio-assets
+
+      # - name: Export drawio files to png files (database)
+      #   uses: rlespinasse/drawio-export-action@v2
+      #   with:
+      #     path: ./database/src/m306_erd.drawio
+      #     output: ./database/src/m306_erd.png
+      #     uncompressed: true
+      #     format: png
+      #     transparent: true
+      #     remove-page-suffix: true
 
       - name: Export drawio files to png files (infra)
         uses: rlespinasse/drawio-export-action@v2
