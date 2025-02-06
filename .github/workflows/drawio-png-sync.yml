@@ -28,7 +28,6 @@ jobs:
           DRAWIO_VERSION=$(curl -s https://api.github.com/repos/jgraph/drawio-desktop/releases/latest | grep -oP '"tag_name": "\Kv?(.*)(?=")' | sed 's/^v//')
           wget https://github.com/jgraph/drawio-desktop/releases/download/v$DRAWIO_VERSION/drawio-amd64-$DRAWIO_VERSION.deb
           sudo dpkg -i drawio-amd64-$DRAWIO_VERSION.deb || sudo apt-get install -f -y
-          sudo chmod 4755 /opt/draw.io/chrome-sandbox
 
       - name: Export .drawio files to .png
         run: |
