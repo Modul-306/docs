@@ -31,6 +31,7 @@ jobs:
 
       - name: Export .drawio files to .png
         run: |
+          sudo chmod 4755 /opt/draw.io/chrome-sandbox
           find . -name "*.drawio" -print0 | while IFS= read -r -d '' file; do
             png_file="${file%.drawio}.png"
             drawio --export --format png --output "$png_file" "$file"
