@@ -11,40 +11,33 @@ on:
 jobs:
   export-drawio:
     runs-on: ubuntu-latest
-
     permissions:
-      contents: write  
+      contents: write 
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: '20'  
 
       - name: Install drawio-cli
-        run: npm i -g @zklogic/draw.io
-
-      - name: Debug drawio installation
-        run: which drawio
+        run: npm install -g drawio-cli
 
       - name: Export .drawio files to .png
         run: |
-          for file in $(find . -name "*.drawio"); do
+          find . -name "*.drawio" -print0 | while IFS= read -r -d '' file; do
             png_file="${file%.drawio}.png"
-            drawio --export --format png --output "$png_file" "$file"
+            drawio-cli --export --format png --output "$png_file" "$file"
           done
-
-      - name: Debug repository files
-        run: |
-          find . -name "*.drawio"
-          find . -name "*.png"
 
       - name: Auto Commit Changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "docs: drawio png sync"
-          file_pattern: "**.png"
+          commit_message: "docs: Auto-export draw.io diagrams to PNG"
+          file_pattern: "*.png"
           commit_user_name: "github-actions[bot]"
