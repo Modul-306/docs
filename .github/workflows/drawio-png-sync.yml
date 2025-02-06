@@ -3,7 +3,7 @@ name: Keep draw.io png synchronized
 on:
   push:
     # branches:
-    #   - main
+    #   - main 
     paths:
       - "**.drawio"
       - .github/workflows/drawio-png-sync.yml
@@ -11,6 +11,9 @@ on:
 jobs:
   export-drawio:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: write  
 
     steps:
       - name: Checkout repository
@@ -22,7 +25,10 @@ jobs:
           node-version: '16'
 
       - name: Install drawio-cli
-        run: npm i -g @zklogic/draw.io #npm install -g drawio-cli
+        run: npm i -g @zklogic/draw.io
+
+      - name: Debug drawio installation
+        run: which drawio
 
       - name: Export .drawio files to .png
         run: |
@@ -30,6 +36,11 @@ jobs:
             png_file="${file%.drawio}.png"
             drawio --export --format png --output "$png_file" "$file"
           done
+
+      - name: Debug repository files
+        run: |
+          find . -name "*.drawio"
+          find . -name "*.png"
 
       - name: Auto Commit Changes
         uses: stefanzweifel/git-auto-commit-action@v5
