@@ -2,42 +2,42 @@ name: Keep draw.io png synchronized
 
 on:
   push:
-    branches:
-      - main
+    # branches:
+    #   - main 
     paths:
       - "**.drawio"
       - .github/workflows/drawio-png-sync.yml
 
 jobs:
   export-drawio:
-    runs-on: ubuntu-latest
- 
+    runs-on: windows-latest
+    permissions:
+      contents: write 
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
- 
-      - name: Set up Python
-        uses: actions/setup-python@v4
         with:
-          python-version: '3.9'
- 
-      - name: Install drawio-batch
+          fetch-depth: 0
+
+      - name: Install draw.io
         run: |
-          pip install drawio-batch
- 
-      - name: Export .drawio to PNG
+          choco install drawio -y
+      
+      - name: Export draw.io diagrams to PNG
         run: |
-          drawio-batch -f png ./database/src/m306_erd.drawio
- 
-      - name: Upload PNG artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: diagram
-          path: ./database/src/m306_erd.png
+          $DIR_DRAWIO = "."
+          $DrawIoFiles = Get-ChildItem $DIR_DRAWIO *.drawio -File -Recurse
+          echo "Found $($DrawIoFiles.Count) draw.io files"
+          echo "$DrawIoFiles"
+          foreach ($file in $DrawIoFiles) {
+            & "C:\Program Files\draw.io\draw.io.exe" --export --format png --uncompressed $file.FullName
+            Start-Sleep -Milliseconds 200
+          }
 
       - name: Auto Commit Changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "docs: drawio png sync"
+          commit_message: "docs: Auto-export draw.io diagrams to PNG"
           file_pattern: "**.png"
           commit_user_name: "github-actions[bot]"
