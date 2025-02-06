@@ -8,10 +8,6 @@ on:
       - "**.drawio"
       - .github/workflows/drawio-png-sync.yml
 
-concurrency:
-  group: drawio-export-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
   drawio-export:
     name: "Drawio PNG Sync"
