@@ -28,6 +28,8 @@ jobs:
         run: |
           $DIR_DRAWIO = "."
           $DrawIoFiles = Get-ChildItem $DIR_DRAWIO *.drawio -File -Recurse
+          echo "Found $($DrawIoFiles.Count) draw.io files"
+          echo "$DrawIoFiles"
           foreach ($file in $DrawIoFiles) {
             & "C:\Program Files\draw.io\draw.io.exe" --export --format png --uncompressed $file.FullName
           }
