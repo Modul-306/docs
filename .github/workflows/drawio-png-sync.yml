@@ -29,6 +29,7 @@ jobs:
         uses: rlespinasse/drawio-export-action@v2
         with:
           path: ./database/src/
+          uncompressed: true
           format: png
           transparent: true
           remove-page-suffix: true
@@ -37,6 +38,7 @@ jobs:
         uses: rlespinasse/drawio-export-action@v2
         with:
           path: ./infra/src/ 
+          uncompressed: true
           format: png
           transparent: true
           remove-page-suffix: true
