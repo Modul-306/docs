@@ -16,8 +16,7 @@ jobs:
   drawio-export:
     name: "Drawio PNG Sync"
     runs-on: ubuntu-latest
-    permissions: # granular permissions
-      # so GitHub can check out this repo using the default github.token
+    permissions:
       contents: write
     steps:
       - name: Checkout sources
@@ -43,6 +42,9 @@ jobs:
           format: png
           transparent: true
           remove-page-suffix: true
+
+      - name: Debug files
+        run: ls -R
 
       - name: Auto Commit Changes
         uses: stefanzweifel/git-auto-commit-action@v5
